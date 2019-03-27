@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
+
+        <link rel="stylesheet" href="./assets/css/cosmo-bootstrap.min.css" />
+        <script
+            src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"
+            integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ="
+            crossorigin="anonymous"
+        ></script>
+        <link
+            rel="stylesheet"
+            href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+            integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+            crossorigin="anonymous"
+        />
+        <link rel="stylesheet" href="./assets/css/style.css" />
+        <link
+            rel="shortcut icon"
+            href="./assets/favicon.ico"
+            type="image/x-icon"
+        />
+        <title>TrainsWatch - track your train!</title>
+    </head>
+    <body>
+        <div class="wrapper">
+            <nav id="sidebar">
+                <div class="sidebar-header">
+                    <a href="./index.html"> <h3>TrainsWatch</h3></a>
+                    <strong>TW</strong>
+                    <button
+                        type="button"
+                        id="sidebarCollapse"
+                        class="btn btn-outline-primary"
+                    >
+                        <i id="expand_icon" class="fas fa-exchange-alt"></i>
+                    </button>
+                </div>
+
+                <ul class="list-unstyled components">
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-home"></i>
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href="#apiSubmenu"
+                            data-toggle="collapse"
+                            aria-expanded="false"
+                            class="dropdown-toggle"
+                        >
+                            <i class="fas fa-cog"></i>
+                            APIs
+                        </a>
+                        <ul class="collapse list-unstyled" id="apiSubmenu">
+                            <li>
+                                <a href="#"
+                                    ><i class="fas fa-subway"></i> MetroRail</a
+                                >
+                            </li>
+                            <li>
+                                <a href="#"
+                                    ><i class="fas fa-bus"></i>MetroBus</a
+                                >
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-question"></i>
+                            FAQs
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div id="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="jumbotron px-0 py-2 text-white rounded">
+                                <h1 class="display-4 text-center">
+                                    TrainsWatch - track your train!
+                                </h1>
+                                <p class="lead text-center">
+                                    A tool to log and check the train
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="data-dump">
+                                <div class="card mb-4 rounded">
+                                    <div class="card-header">
+                                        Current Train Schedule
+                                    </div>
+                                    <div class="card-body">
+                                        <table
+                                            class="table table-sm table-hover"
+                                            id="employee-table"
+                                        >
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">
+                                                        Train Name
+                                                    </th>
+                                                    <th scope="col">
+                                                        Destination
+                                                    </th>
+                                                    <th scope="col">
+                                                        Frequency (min)
+                                                    </th>
+                                                    <th scope="col">
+                                                        Next Arrival
+                                                    </th>
+                                                    <th scope="col">
+                                                        Minutes Away
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card mb-4 rounded">
+                                <div class="card-header">Add Train</div>
+                                <div class="card-body">
+                                    <div
+                                        id="error"
+                                        class="text-center text-danger"
+                                    ></div>
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="employee-name-input"
+                                                >Train Name</label
+                                            >
+                                            <input
+                                                class="form-control"
+                                                id="employee-name-input"
+                                                placeholder="Trains Name. eg, Thomas"
+                                                type="text"
+                                                autocomplete="off"
+                                            />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="role-input"
+                                                >Destination</label
+                                            >
+                                            <input
+                                                class="form-control"
+                                                id="role-input"
+                                                placeholder="eg, Union Station, DC"
+                                                type="text"
+                                                autocomplete="off"
+                                            />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="start-input"
+                                                >First Train Time</label
+                                            >
+                                            <input
+                                                class="form-control"
+                                                id="start-input"
+                                                placeholder="HH:mm"
+                                                type="text"
+                                                autocomplete="off"
+                                            />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="rate-input"
+                                                >Frequency (mins)</label
+                                            >
+                                            <input
+                                                class="form-control"
+                                                id="rate-input"
+                                                placeholder="30"
+                                                type="number"
+                                                autocomplete="off"
+                                            />
+                                        </div>
+                                        <button
+                                            class="btn btn-primary float-right rounded"
+                                            id="add-train-btn"
+                                        >
+                                            Submit
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function() {
+                $('#sidebarCollapse').on('click', function() {
+                    $('#sidebar').toggleClass('active');
+                });
+            });
+        </script>
+    </body>
+</html>
