@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
+
+    <link rel="stylesheet" href="./assets/css/cosmo-bootstrap.min.css" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"
+      integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"
+      integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+      integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon" />
+    <title>TrainsWatch - Check that trainn!!!</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <nav id="sidebar" class="active">
+        <div class="sidebar-header">
+          <a href="#"> <h3>TrainsWatch</h3></a>
+          <strong>TW</strong>
+          <button
+            type="button"
+            id="sidebarCollapse"
+            class="btn btn-outline-dark btn-sm"
+          >
+            <i id="expand_icon" class="fas fa-exchange-alt"></i>
+          </button>
+        </div>
+
+        <ul class="list-unstyled components">
+          <li>
+            <a href="./index.html">
+              <i class="fas fa-home"></i>
+              Home
+            </a>
+          </li>
+          <li>
+            <a
+              href="#apiSubmenu"
+              data-toggle="collapse"
+              aria-expanded="false"
+              class="dropdown-toggle"
+            >
+              <i class="fas fa-cog"></i>
+              APIs
+            </a>
+            <ul class="collapse list-unstyled" id="apiSubmenu">
+              <li>
+                <a href="./metrorail.html"
+                  ><i class="fas fa-subway"></i> MetroRail</a
+                >
+              </li>
+              <li>
+                <a href="./metrobus.html"><i class="fas fa-bus"></i>MetroBus</a>
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <a href="faq.html">
+              <i class="fas fa-question"></i>
+              FAQs
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div id="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <div class="jumbotron px-0 py-2 text-white rounded">
+                <h1 class="display-4 text-center">
+                  <i class="fas fa-subway"></i>
+                  MetroRail
+                </h1>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <div class="jumbotron px-0 py-2 text-white rounded">
+                <div id="metroData" class="text-center"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function() {
+        $('#sidebarCollapse').on('click', function() {
+          $('#sidebar').toggleClass('active');
+        });
+      });
+    </script>
+
+    <script src="./assets/js/metrorail.js"></script>
+  </body>
+</html>
