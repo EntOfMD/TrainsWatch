@@ -24,12 +24,10 @@ $('#add-train-btn').on('click', e => {
     .val()
     .trim();
 
-  let tTime = moment(
-    $('#train-first-input')
-      .val()
-      .trim(),
-    'MM/DD/YYYY'
-  ).format('L');
+  let tTime = $('#train-first-input')
+    .val()
+    .trim();
+
   let tFreq = $('#train-frequency-input')
     .val()
     .trim();
@@ -70,15 +68,15 @@ $('#add-train-btn').on('click', e => {
     $('#destination-input').val('');
     $('#train-first-input').val('');
     $('#train-frequency-input').val('');
+    return false;
   }
-  return false;
 });
 
 // 3. Create a way to retrieve train info from the trainswatch database.
 
 //gets entries on the DB
 db.ref().on('child_added', childSnap => {
-  console.log(childSnap.val());
+  console.log('THIS IS A dataSnapShot ' + childSnap.val());
 
   //declaring again for when a 'child is added'
   let dtName = childSnap.val().name,
@@ -89,23 +87,37 @@ db.ref().on('child_added', childSnap => {
   //logging the values
   console.log(`${dtName} ${dtDestination} ${dtTime} ${dtFreq} `);
 
-  //using moment.js to calculate the start date from today, in months. returns a number
-  //   let workedMonths = moment().diff(moment(dtName, 'L'), 'months');
+  let arrivalTime = dtTime.split(':');
+  let tTime = moment()
+    .hours(arrivalTime[0])
+    .minutes(arrivalTime[1]);
+  let maximumTime = moment.max(moment(), tTime);
+  var tMins, aTime;
 
-  //   //using that returned number to multiply rate to find $$$$
-  //   let eBilled = (workedMonths * eRate).toLocaleString('en-US', {
-  //     style: 'currency',
-  //     currency: 'USD'
-  //   });
+  if (maximumTime === tTime) {
+    aTime = tTime.format('hh:mm A');
+    tMins = tTime.diff(moment(), 'minutes');
+  } else {
+    let timeDiff = moment().diff(tTime, 'minutes');
+    let tMod = timeDiff % dtFreq;
+    tMins = dtFreq - tMod;
+
+    aTime = moment()
+      .add(tMins, 'm')
+      .format('hh:mm A');
+  }
+
+  console.log(`tMins : ${tMins}
+  aTime: ${aTime}
+  `);
 
   //creating a new row in the table
   let newRow = $('<tr>').append(
     $('<td>').text(dtName),
     $('<td>').text(dtDestination),
-    $('<td>').text(dtTime),
-    $('<td>').text(dtFreq)
-    // $('<td>').text(`$${eRate}`),
-    // $('<td>').text(`${eBilled}`)
+    $('<td>').text(dtFreq),
+    $('<td>').text(aTime),
+    $('<td>').text(tMins)
   );
 
   $('#employee-table>tbody').append(newRow);
