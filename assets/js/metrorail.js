@@ -11,27 +11,36 @@ const config = {
 
 //the urls for query url, for hot-switching
 //Any undefined MUST be defined/given value, or it won't work.
-const apiTypes = {
+const trainPath = {
   trainURL: `metrorail/trains/`,
-  trainMetrics: `metrorail/metrics`,
+  trainMetrics: `metrorail/metrics/`,
   trips: {
     // metrorail/trips/{fromStationCode}/{toStationCode}
     fromStation: undefined,
     toStation: undefined,
-    url: `metrorail/trips/`
+    url: 'metrorail/trips/' + this.fromStation + '/' + this.toStation
   },
   tweets: `metrorail/tweets/`,
   trainReports: `metrorail/trains/tags/`,
   indTrainReports: {
     trainId: undefined,
-    url: 'metrorail/trains/' + trainId + '/tags/'
+    url: 'metrorail/trains/' + this.trainId + '/tags/'
   }
+};
+
+const stationPath = {
+  stationReports: 'metrorail/stations/tags',
+  indStationReports: {
+    stationCode: undefined,
+    url: 'metrorail/stations/' + this.stationCode + '/tags'
+  },
+  stationPredictions: 'metrorail/stations/'
 };
 
 // Get train info
 $.ajax({
   type: 'GET',
-  url: config.qURL + apiTypes.trainURL,
+  url: config.qURL + trainPath.trainURL,
   contentType: 'application/json',
   xhrFields: {
     withCredentials: false
