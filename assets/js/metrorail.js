@@ -37,6 +37,8 @@ const stationPath = {
   stationPredictions: 'metrorail/stations/'
 };
 
+var tweetArr = [];
+
 // Get train info
 $.ajax({
   type: 'GET',
@@ -49,5 +51,34 @@ $.ajax({
     apiKey: config._APIKEY_
   }
 }).then(res => {
-  console.log(res);
+  console.log(`TRAIN INFO:`);
+});
+
+//Get Tweets
+$.ajax({
+  type: 'GET',
+  url: config.qURL + trainPath.tweets,
+  contentType: 'application/json',
+  xhrFields: {
+    withCredentials: false
+  },
+  headers: {
+    apiKey: config._APIKEY_
+  }
+}).then(res => {
+  for (const key in res) {
+    let value = res[key];
+
+    //append a 'card' bootstrap to div#tweetData
+    $('#tweetData').append(`
+    <div class="card my-2 mx-5" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">${res[key].userName}</h5>
+      <h6 class="card-subtitle mb-2 text-muted">${res[key].date}</h6>
+      <p class="card-text">${res[key].text}</p>
+      <a href="${res[key].url}" target="_blank" class="card-link">Tweet Link</a>
+
+    </div>
+  </div>`);
+  }
 });
