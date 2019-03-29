@@ -1,14 +1,36 @@
-/* Station Codes
+/* 
+ \\\\\\\\\\\\\\\\\\\\\\
+    RESOURCES
+ \\\\\\\\\\\\\\\\\\\\\\
+ 
+### Station Codes
 https://docs.google.com/spreadsheets/d/13Kz-v3Yjn6ork9vXyl8KLSgzf7KYuGNP9d7HPMd-Kzc/pub?hl=en&single=true&gid=0&output=html
  */
 
 /* 
  \\\\\\\\\\\\\\\\\\\\\\
-    TRAIN API INFO
+    Database
  \\\\\\\\\\\\\\\\\\\\\\
  */
+
+// Initialize Firebase
+var config = {
+  apiKey: 'AIzaSyDP1Acl-V-zBrqEEuxSouMS-RsRBVjuky8',
+  authDomain: 'trainswatchmetroapi.firebaseapp.com',
+  databaseURL: 'https://trainswatchmetroapi.firebaseio.com',
+  projectId: 'trainswatchmetroapi',
+  storageBucket: 'trainswatchmetroapi.appspot.com',
+  messagingSenderId: '640725455569'
+};
+firebase.initializeApp(config);
+
+/* 
+   \\\\\\\\\\\\\\\\\\\\\\
+      TRAIN API INFO
+   \\\\\\\\\\\\\\\\\\\\\\
+   */
 //keeping the config seperate, just in case need to change them in the future
-const config = {
+const api_config = {
   _APIKEY_: `b4139bd1-ea5b-4bc7-aa99-c45f480f5ddd`,
   qURL: `https://dcmetrohero.com/api/v1/`
 };
@@ -42,10 +64,10 @@ const stationPath = {
 };
 
 /* 
- \\\\\\\\\\\\\\\\\\\\\\
-    Variables \ Functions 
- \\\\\\\\\\\\\\\\\\\\\\
- */
+   \\\\\\\\\\\\\\\\\\\\\\
+      Variables \ Functions 
+   \\\\\\\\\\\\\\\\\\\\\\
+   */
 
 function trainInfo(
   id,
@@ -82,54 +104,57 @@ function trainInfo(
   this.observedDate = date;
 }
 
+const tempTrainArr = [];
+
 /* 
- \\\\\\\\\\\\\\\\\\\\\\
-   API CALLS
- \\\\\\\\\\\\\\\\\\\\\\
- */
+   \\\\\\\\\\\\\\\\\\\\\\
+     API CALLS
+   \\\\\\\\\\\\\\\\\\\\\\
+   */
 
 // Get train info
-/* $.ajax({
-    type: 'GET',
-    url: config.qURL + trainPath.trainURL,
-    contentType: 'application/json',
-    xhrFields: {
-        withCredentials: false
-    },
-    headers: {
-        apiKey: config._APIKEY_
-    }
-}).then(res => {
-    console.log(`TRAIN INFO:`);
-}); */
-
-//Get Tweets
 $.ajax({
   type: 'GET',
-  url: config.qURL + trainPath.tweets,
+  url: api_config.qURL + trainPath.trainURL,
   contentType: 'application/json',
   xhrFields: {
     withCredentials: false
   },
   headers: {
-    apiKey: config._APIKEY_
+    apiKey: api_config._APIKEY_
+  }
+}).then(res => {
+  for (const key in res) {
+  }
+});
+
+//Get Tweets
+$.ajax({
+  type: 'GET',
+  url: api_config.qURL + trainPath.tweets,
+  contentType: 'application/json',
+  xhrFields: {
+    withCredentials: false
+  },
+  headers: {
+    apiKey: api_config._APIKEY_
   }
 }).then(res => {
   if (res.length > 0) {
     for (const key in res) {
       //append a 'card' bootstrap to div#tweetData
       $('#tweetData').append(`
-      <div class="card my-2 mx-5 rounded" style="width: 1       8rem;">
-      <div class="card-body">
-      <h5 class="card-title text-dark">${res[key].userName}</h5>
-      <h6 class="card-subtitle mb-2 text-muted">${res[key].date}</h6>
-      <p class="card-text">${res[key].text}</p>
-      <a href="${
-        res[key].url
-      }" target="_blank" class="card-link text-light btn btn-primary rounded">Tweet Link</a>
-      
-      </div>
-      </div>`);
+        <div class="card my-2 mx-5 rounded" style="width: 1       8rem;">
+        <div class="card-body">
+        <h5 class="card-title text-dark">${res[key].userName}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">${res[key].date}</h6>
+        <p class="card-text">${res[key].text}</p>
+        <a href="${
+          res[key].url
+        }" target="_blank" class="card-link text-light btn btn-primary rounded">Tweet Link</a>
+        
+        </div>
+        </div>`);
     }
   } else {
     $('#tweetData').append(
