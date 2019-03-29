@@ -30,7 +30,7 @@ firebase.initializeApp(config);
    \\\\\\\\\\\\\\\\\\\\\\
    */
 //keeping the config seperate, just in case need to change them in the future
-const config = {
+const api_config = {
   _APIKEY_: `b4139bd1-ea5b-4bc7-aa99-c45f480f5ddd`,
   qURL: `https://dcmetrohero.com/api/v1/`
 };
@@ -115,13 +115,13 @@ const tempTrainArr = [];
 // Get train info
 $.ajax({
   type: 'GET',
-  url: config.qURL + trainPath.trainURL,
+  url: api_config.qURL + trainPath.trainURL,
   contentType: 'application/json',
   xhrFields: {
     withCredentials: false
   },
   headers: {
-    apiKey: config._APIKEY_
+    apiKey: api_config._APIKEY_
   }
 }).then(res => {
   for (const key in res) {
@@ -131,13 +131,13 @@ $.ajax({
 //Get Tweets
 $.ajax({
   type: 'GET',
-  url: config.qURL + trainPath.tweets,
+  url: api_config.qURL + trainPath.tweets,
   contentType: 'application/json',
   xhrFields: {
     withCredentials: false
   },
   headers: {
-    apiKey: config._APIKEY_
+    apiKey: api_config._APIKEY_
   }
 }).then(res => {
   if (res.length > 0) {
